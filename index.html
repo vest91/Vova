@@ -4,127 +4,648 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#79D64A">
-<title>Забетонуй бренд: Reigns mode</title>
+<title>Забетонуй бренд</title>
 <style>
-:root{--green:#79D64A;--green2:#A7E67D;--black:#111;--white:#fff;--paper:#F4F4F0;--shadow:0 7px 0 rgba(0,0,0,.16);--blue:#4b74d6;}
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;touch-action:none;user-select:none}
-html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#111;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--black)}
-body{display:flex;align-items:center;justify-content:center}
-#app{position:relative;width:min(100vw,520px);height:100dvh;max-height:980px;overflow:hidden;background:var(--paper)}
-.hidden{display:none!important}
-#bgGrid{position:absolute;inset:0;background:linear-gradient(rgba(0,0,0,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,.06) 1px,transparent 1px);background-size:38px 38px;opacity:.7}
-#stripeB{position:absolute;left:0;top:0;bottom:0;width:18px;background:#111}
-#stripeG{position:absolute;left:18px;top:0;bottom:0;width:28px;background:var(--green)}
-#crane{position:absolute;right:14px;top:148px;width:70px;height:220px;opacity:.16}
-#crane:before,#crane:after{content:"";position:absolute;background:#111}
-#crane:before{left:22px;top:0;width:4px;height:200px}
-#crane:after{left:22px;top:18px;width:48px;height:4px}
-.card{background:#fff;border:3px solid #111;border-radius:18px;box-shadow:var(--shadow)}
-#hud{position:absolute;top:calc(env(safe-area-inset-top) + 10px);left:12px;right:12px;z-index:12;display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
-.mini{padding:8px 10px;min-height:62px}
-.mini small{display:block;font-size:11px;font-weight:1000;letter-spacing:.08em;text-transform:uppercase;opacity:.72;margin-bottom:4px}
-.mini strong{display:block;font-size:clamp(18px,5.2vw,28px);line-height:1;font-weight:1000}
-.meters{position:absolute;top:calc(env(safe-area-inset-top) + 84px);left:12px;right:12px;z-index:12;display:grid;gap:8px}
-.meter{background:#fff;border:3px solid #111;border-radius:16px;box-shadow:var(--shadow);padding:8px 10px}
-.meterRow{display:flex;align-items:center;justify-content:space-between;font-size:12px;font-weight:1000;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
-.bar{height:14px;background:#ececec;border:2px solid #111;border-radius:999px;overflow:hidden}
-.fill{height:100%;width:50%;background:#111}
-#fillBrand{background:var(--green)}
-#fillSales{background:var(--blue)}
-#fillTrust{background:#111}
-#cardStack{position:absolute;left:50%;top:53%;transform:translate(-50%,-50%);z-index:15;width:min(82vw,380px);height:310px}
-.bgCard{position:absolute;inset:12px 0 auto 0;margin:auto;width:94%;height:92%;background:#fff;border:3px solid #111;border-radius:24px;opacity:.55;box-shadow:0 8px 0 rgba(0,0,0,.12)}
-.bgCard.second{transform:translateY(10px) scale(.97);opacity:.42}
-.bgCard.third{transform:translateY(20px) scale(.94);opacity:.28}
-#gameCard{position:absolute;inset:0;background:#fff;border:4px solid #111;border-radius:24px;box-shadow:0 10px 0 rgba(0,0,0,.16);padding:18px 16px 16px;display:flex;flex-direction:column;justify-content:space-between;transform:translate(0,0) rotate(0deg);transition:transform .18s ease-out,opacity .18s ease-out}
-#gameCard::before{content:"";position:absolute;left:0;top:0;bottom:0;width:18px;background:var(--green);border-radius:20px 0 0 20px}
-#cardLabel{padding-left:14px;font-size:11px;font-weight:1000;text-transform:uppercase;letter-spacing:.12em;opacity:.68}
-#cardTitle{padding-left:14px;margin-top:10px;font-size:25px;line-height:1.14;font-weight:1000;letter-spacing:-.02em}
-#cardHint{padding-left:14px;font-size:13px;font-weight:900;line-height:1.25;opacity:.74}
-.choiceGhost{position:absolute;top:50%;transform:translateY(-50%);max-width:40%;font-size:17px;line-height:1.15;font-weight:1000;background:rgba(255,255,255,.95);border:3px solid #111;border-radius:18px;padding:10px 12px;box-shadow:var(--shadow);opacity:0;transition:opacity .12s ease-out}
-.choiceGhost.left{left:14px;text-align:left}
-.choiceGhost.right{right:14px;text-align:right}
-#feedback{position:absolute;left:50%;top:calc(env(safe-area-inset-top) + 285px);transform:translateX(-50%);z-index:18;max-width:86%;background:#111;color:#fff;border:3px solid #111;border-radius:18px;box-shadow:var(--shadow);padding:10px 12px;font-weight:950;font-size:14px;line-height:1.22;text-align:center;opacity:0;transition:opacity .18s,transform .18s;pointer-events:none}
-#feedback.show{opacity:1;transform:translateX(-50%) translateY(8px)}
-#controls{position:absolute;left:50%;bottom:calc(env(safe-area-inset-bottom) + 96px);transform:translateX(-50%);z-index:12;display:grid;grid-template-columns:1fr 1fr;gap:10px;width:min(90%,420px)}
-.ctrl{padding:12px 10px;background:#fff;border:3px solid #111;border-radius:18px;box-shadow:var(--shadow);font-weight:1000;font-size:14px;line-height:1.15;text-align:center}
-.ctrl b{display:block;font-size:17px}
-#quoteBar{position:absolute;left:12px;right:12px;bottom:calc(env(safe-area-inset-bottom) + 10px);z-index:12;background:#111;color:#fff;border:3px solid #111;border-radius:18px;padding:10px 12px;box-shadow:var(--shadow);font-weight:900;font-size:14px;line-height:1.22}
-.screen{position:absolute;inset:0;z-index:20;display:flex;flex-direction:column;justify-content:space-between;padding:calc(env(safe-area-inset-top) + 18px) 16px calc(env(safe-area-inset-bottom) + 18px);background:rgba(244,244,240,.98)}
-.hero{display:grid;grid-template-columns:112px 1fr;gap:12px;align-items:end}
-.portrait{height:150px;overflow:hidden;background:linear-gradient(180deg,var(--green),#DDF4D1);border:3px solid #111;border-radius:22px;box-shadow:var(--shadow);display:flex;align-items:center;justify-content:center;font-size:54px}
-.headerBlock{position:relative;padding:16px 16px 18px 18px;background:#111;color:#fff;border:3px solid #111;border-radius:22px;box-shadow:var(--shadow);overflow:hidden}
-.headerBlock:before{content:"";position:absolute;left:0;top:0;bottom:0;width:18px;background:var(--green)}
-.eyebrow{padding-left:12px;font-size:11px;font-weight:1000;text-transform:uppercase;letter-spacing:.12em;opacity:.72}
-h1{margin:10px 0 0;padding-left:12px;font-size:clamp(32px,10vw,56px);line-height:.86;font-weight:1000;text-transform:uppercase;letter-spacing:-.06em}
-.sub{margin-top:10px;padding-left:12px;font-size:14px;line-height:1.2;font-weight:900;opacity:.86}
-.panel{padding:14px}
-.cta{width:100%;padding:16px;border:3px solid #111;border-radius:22px;background:var(--green);color:#111;box-shadow:0 8px 0 rgba(0,0,0,.18);font-size:clamp(28px,8vw,42px);font-weight:1000;text-transform:uppercase}
-.meta{margin-top:8px;text-align:center;font-size:12px;font-weight:900;opacity:.66}
-.badges{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
-.badge{padding:10px;background:#fff;border:3px solid #111;border-radius:16px;box-shadow:0 5px 0 rgba(0,0,0,.12);font-size:13px;font-weight:1000;line-height:1.2}
-.quotePanel{margin-top:10px;padding:10px 12px;background:#111;color:#fff;border-radius:16px;font-size:14px;line-height:1.22;font-weight:900}
-.gameOver{justify-content:center;gap:12px;background:rgba(244,244,240,.92);backdrop-filter:blur(3px)}
-.scoreBig{font-size:58px;line-height:1;font-weight:1000}
-.rank{font-size:22px;line-height:1.15;font-weight:1000}
-.share{margin-top:12px;padding:10px 12px;background:#111;color:#fff;border-radius:16px;font-size:14px;line-height:1.25;font-weight:900}
+:root{
+  --green:#79D64A;
+  --green2:#A7E67D;
+  --black:#111;
+  --white:#fff;
+  --paper:#F4F4F0;
+  --blue:#4B74D6;
+  --red:#C94A4A;
+  --shadow:0 6px 0 rgba(0,0,0,.14);
+}
+*{
+  box-sizing:border-box;
+  -webkit-tap-highlight-color:transparent;
+  user-select:none;
+  -webkit-user-select:none;
+}
+html,body{
+  margin:0;
+  width:100%;
+  height:100%;
+  overflow:hidden;
+  background:#111;
+  font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  color:var(--black);
+}
+body{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+#app{
+  position:relative;
+  width:min(100vw,520px);
+  height:100dvh;
+  max-height:980px;
+  overflow:hidden;
+  background:var(--paper);
+}
+.hidden{display:none !important;}
+
+/* Background */
+#bgGrid{
+  position:absolute; inset:0;
+  background:
+    linear-gradient(rgba(0,0,0,.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,0,0,.05) 1px, transparent 1px);
+  background-size:38px 38px;
+}
+#stripeBlack{
+  position:absolute; left:0; top:0; bottom:0;
+  width:18px; background:#111;
+}
+#stripeGreen{
+  position:absolute; left:18px; top:0; bottom:0;
+  width:28px; background:var(--green);
+}
+
+/* Generic */
+.card{
+  background:#fff;
+  border:3px solid #111;
+  border-radius:18px;
+  box-shadow:var(--shadow);
+}
+
+/* HUD */
+#hud{
+  position:absolute;
+  top:calc(env(safe-area-inset-top) + 8px);
+  left:10px; right:10px;
+  z-index:20;
+  display:grid;
+  gap:8px;
+}
+#topStats{
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:8px;
+}
+.mini{
+  padding:8px 10px;
+  min-height:58px;
+}
+.mini small{
+  display:block;
+  font-size:10px;
+  line-height:1;
+  font-weight:1000;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  opacity:.72;
+  margin-bottom:4px;
+}
+.mini strong{
+  display:block;
+  font-size:clamp(18px,5vw,26px);
+  line-height:1;
+  font-weight:1000;
+}
+
+#meters{
+  padding:8px 10px;
+}
+.meter{
+  margin-bottom:8px;
+}
+.meter:last-child{margin-bottom:0;}
+.meterRow{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  font-size:11px;
+  font-weight:1000;
+  text-transform:uppercase;
+  margin-bottom:4px;
+}
+.bar{
+  height:12px;
+  background:#e9e9e9;
+  border:2px solid #111;
+  border-radius:999px;
+  overflow:hidden;
+}
+.fill{
+  height:100%;
+  width:50%;
+}
+#fillBrand{background:var(--green);}
+#fillSales{background:var(--blue);}
+#fillTrust{background:#111;}
+
+/* Card stack */
+#cardArea{
+  position:absolute;
+  left:50%;
+  top:55%;
+  transform:translate(-50%,-50%);
+  width:min(82vw,380px);
+  height:290px;
+  z-index:15;
+}
+.bgCard{
+  position:absolute;
+  inset:0;
+  margin:auto;
+  width:94%;
+  height:92%;
+  border:3px solid #111;
+  border-radius:24px;
+  background:#fff;
+  box-shadow:0 8px 0 rgba(0,0,0,.10);
+}
+.bgCard.one{transform:translateY(18px) scale(.95); opacity:.28;}
+.bgCard.two{transform:translateY(9px) scale(.975); opacity:.42;}
+
+#gameCard{
+  position:absolute;
+  inset:0;
+  background:#fff;
+  border:4px solid #111;
+  border-radius:24px;
+  box-shadow:0 10px 0 rgba(0,0,0,.16);
+  padding:18px 16px 16px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  transform:translate(0,0) rotate(0deg);
+  transition:transform .18s ease-out, opacity .18s ease-out;
+  touch-action:none;
+}
+#gameCard:before{
+  content:"";
+  position:absolute;
+  left:0; top:0; bottom:0;
+  width:18px;
+  background:var(--green);
+  border-radius:20px 0 0 20px;
+}
+#cardLabel{
+  padding-left:14px;
+  font-size:11px;
+  font-weight:1000;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  opacity:.66;
+}
+#cardTitle{
+  padding-left:14px;
+  margin-top:10px;
+  font-size:24px;
+  line-height:1.15;
+  font-weight:1000;
+  letter-spacing:-.02em;
+}
+#cardHint{
+  padding-left:14px;
+  font-size:13px;
+  line-height:1.22;
+  font-weight:900;
+  opacity:.72;
+}
+.choiceGhost{
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+  max-width:40%;
+  background:rgba(255,255,255,.96);
+  border:3px solid #111;
+  border-radius:16px;
+  box-shadow:var(--shadow);
+  padding:10px 12px;
+  font-size:16px;
+  line-height:1.12;
+  font-weight:1000;
+  opacity:0;
+  transition:opacity .12s ease-out;
+}
+.choiceGhost.left{left:14px;text-align:left;}
+.choiceGhost.right{right:14px;text-align:right;}
+
+/* Feedback */
+#feedback{
+  position:absolute;
+  left:50%;
+  top:calc(env(safe-area-inset-top) + 228px);
+  transform:translateX(-50%);
+  z-index:25;
+  width:min(86%,430px);
+  background:#111;
+  color:#fff;
+  border:3px solid #111;
+  border-radius:16px;
+  box-shadow:var(--shadow);
+  padding:10px 12px;
+  font-size:14px;
+  line-height:1.22;
+  font-weight:950;
+  text-align:center;
+  opacity:0;
+  transition:opacity .18s, transform .18s;
+  pointer-events:none;
+}
+#feedback.show{
+  opacity:1;
+  transform:translateX(-50%) translateY(6px);
+}
+
+/* Bottom controls */
+#controls{
+  position:absolute;
+  left:12px; right:12px;
+  bottom:calc(env(safe-area-inset-bottom) + 78px);
+  z-index:20;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+.ctrl{
+  padding:12px 10px;
+  background:#fff;
+  border:3px solid #111;
+  border-radius:18px;
+  box-shadow:var(--shadow);
+  text-align:center;
+  font-size:13px;
+  line-height:1.15;
+  font-weight:1000;
+}
+.ctrl b{
+  display:block;
+  font-size:17px;
+  margin-bottom:2px;
+}
+
+#quoteBar{
+  position:absolute;
+  left:12px; right:12px;
+  bottom:calc(env(safe-area-inset-bottom) + 10px);
+  z-index:20;
+  background:#111;
+  color:#fff;
+  border:3px solid #111;
+  border-radius:18px;
+  box-shadow:var(--shadow);
+  padding:10px 12px;
+  font-size:14px;
+  line-height:1.22;
+  font-weight:900;
+}
+
+/* Screens */
+.screen{
+  position:absolute;
+  inset:0;
+  z-index:40;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  padding:calc(env(safe-area-inset-top) + 18px) 16px calc(env(safe-area-inset-bottom) + 18px);
+  background:rgba(244,244,240,.98);
+}
+.hero{
+  display:grid;
+  grid-template-columns:112px 1fr;
+  gap:12px;
+  align-items:end;
+}
+.headerBlock{
+  position:relative;
+  padding:16px 16px 18px 18px;
+  background:#111;
+  color:#fff;
+  border:3px solid #111;
+  border-radius:22px;
+  box-shadow:var(--shadow);
+  overflow:hidden;
+}
+.headerBlock:before{
+  content:"";
+  position:absolute;
+  left:0; top:0; bottom:0;
+  width:18px;
+  background:var(--green);
+}
+.eyebrow{
+  padding-left:12px;
+  font-size:11px;
+  font-weight:1000;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  opacity:.72;
+}
+h1{
+  margin:10px 0 0;
+  padding-left:12px;
+  font-size:clamp(32px,10vw,56px);
+  line-height:.86;
+  font-weight:1000;
+  text-transform:uppercase;
+  letter-spacing:-.06em;
+}
+.sub{
+  margin-top:10px;
+  padding-left:12px;
+  font-size:14px;
+  line-height:1.22;
+  font-weight:900;
+  opacity:.86;
+}
+.panel{
+  padding:14px;
+}
+.badges{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  margin-top:10px;
+}
+.badge{
+  padding:10px;
+  background:#fff;
+  border:3px solid #111;
+  border-radius:16px;
+  box-shadow:0 5px 0 rgba(0,0,0,.12);
+  font-size:13px;
+  line-height:1.2;
+  font-weight:1000;
+}
+.quotePanel{
+  margin-top:10px;
+  padding:10px 12px;
+  background:#111;
+  color:#fff;
+  border-radius:16px;
+  font-size:14px;
+  line-height:1.22;
+  font-weight:900;
+}
+.cta{
+  width:100%;
+  padding:16px;
+  border:3px solid #111;
+  border-radius:22px;
+  background:var(--green);
+  color:#111;
+  box-shadow:0 8px 0 rgba(0,0,0,.18);
+  font-size:clamp(28px,8vw,42px);
+  font-weight:1000;
+  text-transform:uppercase;
+}
+.meta{
+  margin-top:8px;
+  text-align:center;
+  font-size:12px;
+  font-weight:900;
+  opacity:.66;
+}
+.gameOver{
+  justify-content:center;
+  gap:12px;
+}
+.scoreBig{
+  font-size:58px;
+  line-height:1;
+  font-weight:1000;
+}
+.rank{
+  font-size:22px;
+  line-height:1.15;
+  font-weight:1000;
+}
+.share{
+  margin-top:12px;
+  padding:10px 12px;
+  background:#111;
+  color:#fff;
+  border-radius:16px;
+  font-size:14px;
+  line-height:1.25;
+  font-weight:900;
+}
+
+/* Simpson-style avatar */
+.simpsonWrap{
+  position:relative;
+  height:150px;
+  border:3px solid #111;
+  border-radius:22px;
+  box-shadow:var(--shadow);
+  background:linear-gradient(180deg,var(--green),#dff5d1);
+  overflow:hidden;
+}
+.simpson{
+  position:absolute;
+  left:50%;
+  bottom:0;
+  transform:translateX(-50%);
+  width:96px;
+  height:132px;
+}
+.head{
+  position:absolute;
+  left:50%;
+  top:10px;
+  transform:translateX(-50%);
+  width:82px;
+  height:78px;
+  background:#F6D64A;
+  border:3px solid #111;
+  border-radius:42px 42px 38px 38px;
+}
+.hair{
+  position:absolute;
+  left:50%;
+  top:4px;
+  width:58px;
+  height:18px;
+  transform:translateX(-50%);
+}
+.hair span{
+  position:absolute;
+  width:3px;
+  height:16px;
+  background:#111;
+  border-radius:3px;
+}
+.hair span:nth-child(1){left:8px; transform:rotate(-28deg);}
+.hair span:nth-child(2){left:20px; transform:rotate(-12deg);}
+.hair span:nth-child(3){left:32px; transform:rotate(10deg);}
+.hair span:nth-child(4){left:44px; transform:rotate(26deg);}
+.eyes{
+  position:absolute;
+  left:50%;
+  top:28px;
+  transform:translateX(-50%);
+  width:52px;
+  height:22px;
+}
+.eye{
+  position:absolute;
+  width:24px;
+  height:24px;
+  background:#fff;
+  border:3px solid #111;
+  border-radius:50%;
+  top:0;
+}
+.eye.left{left:0;}
+.eye.right{right:0;}
+.pupil{
+  position:absolute;
+  width:6px;
+  height:6px;
+  background:#111;
+  border-radius:50%;
+  top:8px;
+  left:9px;
+}
+.nose{
+  position:absolute;
+  left:47px;
+  top:48px;
+  width:12px;
+  height:10px;
+  border-right:3px solid #111;
+  border-bottom:3px solid #111;
+  border-radius:0 0 8px 0;
+}
+.mouth{
+  position:absolute;
+  left:31px;
+  top:61px;
+  width:25px;
+  height:9px;
+  border-bottom:3px solid #111;
+  border-radius:0 0 16px 16px;
+}
+.beard{
+  position:absolute;
+  left:50%;
+  top:55px;
+  transform:translateX(-50%);
+  width:62px;
+  height:24px;
+  background:#8B5A3C;
+  border:3px solid #111;
+  border-radius:10px 10px 18px 18px;
+}
+.body{
+  position:absolute;
+  left:50%;
+  bottom:0;
+  transform:translateX(-50%);
+  width:58px;
+  height:48px;
+  background:#2b2b2b;
+  border:3px solid #111;
+  border-radius:16px 16px 8px 8px;
+}
+.neck{
+  position:absolute;
+  left:50%;
+  top:84px;
+  transform:translateX(-50%);
+  width:18px;
+  height:10px;
+  background:#F6D64A;
+  border-left:3px solid #111;
+  border-right:3px solid #111;
+}
+.nameTag{
+  position:absolute;
+  right:8px;
+  bottom:8px;
+  background:#fff;
+  border:2px solid #111;
+  border-radius:999px;
+  padding:4px 8px;
+  font-size:11px;
+  font-weight:1000;
+}
+
+/* Small screens */
 @media (max-height:780px){
-  .hero{grid-template-columns:90px 1fr}
-  .portrait{height:118px}
-  #cardTitle{font-size:22px}
-  #cardStack{height:280px;top:52%}
-  #controls{bottom:calc(env(safe-area-inset-bottom) + 86px)}
-  #feedback{top:calc(env(safe-area-inset-top) + 270px)}
+  #feedback{top:calc(env(safe-area-inset-top) + 214px);}
+  #cardArea{height:260px; top:56%;}
+  #cardTitle{font-size:21px;}
+  #controls{bottom:calc(env(safe-area-inset-bottom) + 72px);}
+  .hero{grid-template-columns:90px 1fr;}
+  .simpsonWrap{height:118px;}
+  .simpson{transform:translateX(-50%) scale(.82); transform-origin:bottom center;}
 }
 </style>
 </head>
 <body>
 <div id="app">
   <div id="bgGrid"></div>
-  <div id="stripeB"></div>
-  <div id="stripeG"></div>
-  <div id="crane"></div>
+  <div id="stripeBlack"></div>
+  <div id="stripeGreen"></div>
 
   <div id="hud" class="hidden">
-    <div class="card mini"><small>Рахунок</small><strong id="score">0</strong></div>
-    <div class="card mini"><small>Час</small><strong id="time">60</strong></div>
-    <div class="card mini"><small>Комбо</small><strong>x<span id="combo">1</span></strong></div>
-  </div>
+    <div id="topStats">
+      <div class="card mini">
+        <small>Рахунок</small>
+        <strong id="score">0</strong>
+      </div>
+      <div class="card mini">
+        <small>Час</small>
+        <strong id="time">60</strong>
+      </div>
+      <div class="card mini">
+        <small>Комбо</small>
+        <strong>x<span id="combo">1</span></strong>
+      </div>
+    </div>
 
-  <div class="meters hidden" id="meters">
-    <div class="meter">
-      <div class="meterRow"><span>Brand</span><span id="brandNum">50</span></div>
-      <div class="bar"><div class="fill" id="fillBrand"></div></div>
-    </div>
-    <div class="meter">
-      <div class="meterRow"><span>Sales</span><span id="salesNum">50</span></div>
-      <div class="bar"><div class="fill" id="fillSales"></div></div>
-    </div>
-    <div class="meter">
-      <div class="meterRow"><span>Trust</span><span id="trustNum">50</span></div>
-      <div class="bar"><div class="fill" id="fillTrust"></div></div>
+    <div id="meters" class="card">
+      <div class="meter">
+        <div class="meterRow"><span>Brand</span><span id="brandNum">50</span></div>
+        <div class="bar"><div class="fill" id="fillBrand"></div></div>
+      </div>
+      <div class="meter">
+        <div class="meterRow"><span>Sales</span><span id="salesNum">50</span></div>
+        <div class="bar"><div class="fill" id="fillSales"></div></div>
+      </div>
+      <div class="meter">
+        <div class="meterRow"><span>Trust</span><span id="trustNum">50</span></div>
+        <div class="bar"><div class="fill" id="fillTrust"></div></div>
+      </div>
     </div>
   </div>
 
   <div id="feedback"></div>
 
-  <div id="cardStack" class="hidden">
-    <div class="bgCard third"></div>
-    <div class="bgCard second"></div>
+  <div id="cardArea" class="hidden">
+    <div class="bgCard one"></div>
+    <div class="bgCard two"></div>
+
     <div id="gameCard">
       <div class="choiceGhost left" id="choiceLeft"></div>
       <div class="choiceGhost right" id="choiceRight"></div>
+
       <div>
         <div id="cardLabel">CMO дилема</div>
         <div id="cardTitle"></div>
       </div>
-      <div id="cardHint">Свайпни ліворуч або праворуч. Як у Reigns / Tinder, але для маркетолога.</div>
+
+      <div id="cardHint">Свайп ліворуч або праворуч. Як у Reigns / Tinder.</div>
     </div>
   </div>
 
   <div id="controls" class="hidden">
-    <button class="ctrl" id="btnLeft"><b>← Ліворуч</b><span id="btnLeftText">В утиль</span></button>
-    <button class="ctrl" id="btnRight"><b>Праворуч →</b><span id="btnRightText">Запускаємо</span></button>
+    <button class="ctrl" id="btnLeft">
+      <b>← Ліворуч</b>
+      <span id="btnLeftText">В утиль</span>
+    </button>
+    <button class="ctrl" id="btnRight">
+      <b>Праворуч →</b>
+      <span id="btnRightText">Запускаємо</span>
+    </button>
   </div>
 
   <div id="quoteBar" class="hidden">«Є бетон, а є Ковальська»</div>
@@ -132,43 +653,80 @@ h1{margin:10px 0 0;padding-left:12px;font-size:clamp(32px,10vw,56px);line-height
   <section id="startScreen" class="screen">
     <div>
       <div class="hero">
-        <div class="portrait">🧔🏻‍♂️</div>
+        <div class="simpsonWrap">
+          <div class="simpson">
+            <div class="hair"><span></span><span></span><span></span><span></span></div>
+            <div class="head"></div>
+            <div class="eyes">
+              <div class="eye left"><div class="pupil"></div></div>
+              <div class="eye right"><div class="pupil"></div></div>
+            </div>
+            <div class="nose"></div>
+            <div class="beard"></div>
+            <div class="mouth"></div>
+            <div class="neck"></div>
+            <div class="body"></div>
+          </div>
+          <div class="nameTag">Vova</div>
+        </div>
+
         <div class="headerBlock">
-          <div class="eyebrow">нова механіка</div>
+          <div class="eyebrow">нова версія</div>
           <h1>Забетонуй<br>бренд</h1>
-          <div class="sub">Тепер це міні-гра в стилі <b>Reigns</b>: свайпаєш картки вліво / вправо і дивишся на наслідки.</div>
+          <div class="sub">Тепер без хаотичного оверлепу і з Вовою в стилі Сімпсонів.</div>
         </div>
       </div>
+
       <div class="card panel" style="margin-top:12px;">
         <div style="font-size:16px;line-height:1.25;font-weight:950;">
-          Кожна картка — це маркетингова дилема. Кожен свайп змінює <b>Brand</b>, <b>Sales</b> і <b>Trust</b>. Протримайся <b>60 секунд</b> і не завали метрики.
+          Це міні-гра в стилі <b>Reigns</b>: свайпаєш картки вліво / вправо, а кожне рішення змінює <b>Brand</b>, <b>Sales</b> і <b>Trust</b>.
         </div>
+
         <div class="badges">
-          <div class="badge">Свайп <b>ліворуч</b><br>ліва опція на картці</div>
-          <div class="badge">Свайп <b>праворуч</b><br>права опція на картці</div>
+          <div class="badge">Свайп <b>ліворуч</b><br>ліва опція</div>
+          <div class="badge">Свайп <b>праворуч</b><br>права опція</div>
         </div>
+
         <div class="quotePanel" id="startQuote"></div>
       </div>
     </div>
+
     <div>
       <button id="startBtn" class="cta">Почати</button>
-      <div class="meta">mobile-first · ковальська-стиль · рішення мають наслідки</div>
+      <div class="meta">mobile-first · ковальська-стиль · simpsons vova</div>
     </div>
   </section>
 
   <section id="overScreen" class="screen gameOver hidden">
     <div class="card panel">
       <div class="hero" style="grid-template-columns:86px 1fr;align-items:center;">
-        <div class="portrait" style="height:112px">🧔🏻‍♂️</div>
+        <div class="simpsonWrap" style="height:112px;">
+          <div class="simpson" style="transform:translateX(-50%) scale(.8);transform-origin:bottom center;">
+            <div class="hair"><span></span><span></span><span></span><span></span></div>
+            <div class="head"></div>
+            <div class="eyes">
+              <div class="eye left"><div class="pupil"></div></div>
+              <div class="eye right"><div class="pupil"></div></div>
+            </div>
+            <div class="nose"></div>
+            <div class="beard"></div>
+            <div class="mouth"></div>
+            <div class="neck"></div>
+            <div class="body"></div>
+          </div>
+        </div>
+
         <div>
           <div class="eyebrow" style="padding-left:0;color:#111;">результат</div>
           <div class="scoreBig" id="finalScore">0</div>
           <div class="rank" id="finalRank">Бриф ще сирий</div>
         </div>
       </div>
+
       <div class="quotePanel" id="finalQuote"></div>
       <div class="share" id="shareText"></div>
     </div>
+
     <div style="display:grid;gap:10px;">
       <button id="againBtn" class="cta">Ще раз</button>
       <button id="copyBtn" class="badge" style="width:100%;">Скопіювати результат</button>
@@ -268,51 +826,6 @@ h1{margin:10px 0 0;padding-left:12px;font-size:clamp(32px,10vw,56px);line-height
       right_effects:{brand:-4,sales:-3,trust:-11,score:8},
       left_result:"Інтуїція — добре, але хай дані допоможуть.",
       right_result:"Тунельне бачення — не завжди суперсила."
-    },
-    {
-      title:"Ідея провокативна, але може сильно підсвітити бренд.",
-      left_label:"Ризикуємо розумно",
-      right_label:"Беремо безпечне",
-      left_effects:{brand:10,sales:2,trust:3,score:88},
-      right_effects:{brand:-5,sales:1,trust:0,score:20},
-      left_result:"Хочеш статуетку — роби навпаки.",
-      right_result:"Безпечно, але й без шансу на вау."
-    },
-    {
-      title:"Маркетингова ініціатива не має цілі, інсайту і сенсу.",
-      left_label:"Вбити ідею",
-      right_label:"Дотягнути аби було",
-      left_effects:{brand:7,sales:0,trust:6,score:82},
-      right_effects:{brand:-8,sales:-2,trust:-8,score:5},
-      left_result:"Kill — теж стратегія.",
-      right_result:"Життя занадто коротке для поганих концептів."
-    },
-    {
-      title:"Пропонують заощадити на бренд-комунікації і вкласти все в знижки.",
-      left_label:"Балансувати, не рубати бренд",
-      right_label:"Все в промо",
-      left_effects:{brand:7,sales:3,trust:5,score:84},
-      right_effects:{brand:-11,sales:8,trust:-5,score:20},
-      left_result:"Короткі гроші без бренду — слизька дорога.",
-      right_result:"Сьогодні продали, завтра забули хто ви."
-    },
-    {
-      title:"Агенція принесла 40 слайдів без одного нормального інсайту.",
-      left_label:"Попросити переробити",
-      right_label:"Ок, несіть у прод",
-      left_effects:{brand:3,sales:0,trust:8,score:76},
-      right_effects:{brand:-6,sales:-3,trust:-10,score:5},
-      left_result:"Слайди — не заміна думці.",
-      right_result:"Багато слайдів ще не означає багато сенсу."
-    },
-    {
-      title:"З'явилась гіпотеза, чому бренд недооцінюють на ринку.",
-      left_label:"Перевірити гіпотезу",
-      right_label:"Одразу все міняти",
-      left_effects:{brand:2,sales:0,trust:9,score:79},
-      right_effects:{brand:-5,sales:-2,trust:-9,score:10},
-      left_result:"Спершу перевірка, потім революція.",
-      right_result:"Метушня — не стратегія."
     }
   ];
 
@@ -325,7 +838,6 @@ h1{margin:10px 0 0;padding-left:12px;font-size:clamp(32px,10vw,56px);line-height
   ];
 
   const hud = document.getElementById("hud");
-  const meters = document.getElementById("meters");
   const scoreEl = document.getElementById("score");
   const timeEl = document.getElementById("time");
   const comboEl = document.getElementById("combo");
@@ -337,20 +849,24 @@ h1{margin:10px 0 0;padding-left:12px;font-size:clamp(32px,10vw,56px);line-height
   const fillSales = document.getElementById("fillSales");
   const fillTrust = document.getElementById("fillTrust");
 
-  const cardStack = document.getElementById("cardStack");
-  const card = document.getElementById("gameCard");
+  const cardArea = document.getElementById("cardArea");
+  const gameCard = document.getElementById("gameCard");
   const cardTitle = document.getElementById("cardTitle");
   const choiceLeft = document.getElementById("choiceLeft");
   const choiceRight = document.getElementById("choiceRight");
-  const btnLeftText = document.getElementById("btnLeftText");
-  const btnRightText = document.getElementById("btnRightText");
+
   const btnLeft = document.getElementById("btnLeft");
   const btnRight = document.getElementById("btnRight");
+  const btnLeftText = document.getElementById("btnLeftText");
+  const btnRightText = document.getElementById("btnRightText");
 
+  const controls = document.getElementById("controls");
   const quoteBar = document.getElementById("quoteBar");
   const feedback = document.getElementById("feedback");
+
   const startScreen = document.getElementById("startScreen");
   const overScreen = document.getElementById("overScreen");
+
   const startQuote = document.getElementById("startQuote");
   const startBtn = document.getElementById("startBtn");
   const againBtn = document.getElementById("againBtn");
@@ -378,46 +894,46 @@ h1{margin:10px 0 0;padding-left:12px;font-size:clamp(32px,10vw,56px);line-height
   let trust = 50;
 
   let dragging = false;
-  let sx = 0;
-  let dx = 0;
+  let startX = 0;
+  let deltaX = 0;
   let resolving = false;
   let feedbackTimer = 0;
 
-  function shuffle(arr) {
+  function shuffle(arr){
     const a = arr.slice();
-    for (let i = a.length - 1; i > 0; i--) {
+    for(let i = a.length - 1; i > 0; i--){
       const j = Math.floor(Math.random() * (i + 1));
       [a[i], a[j]] = [a[j], a[i]];
     }
     return a;
   }
 
-  function clamp(n) {
+  function clamp(n){
     return Math.max(0, Math.min(100, n));
   }
 
-  function nextCard() {
-    if (deck.length === 0) deck = shuffle(cards);
+  function nextCard(){
+    if(deck.length === 0) deck = shuffle(cards);
     return deck.pop();
   }
 
-  function nextQuote() {
-    if (quoteDeck.length === 0 || quoteIndex >= quoteDeck.length) {
+  function nextQuote(){
+    if(quoteDeck.length === 0 || quoteIndex >= quoteDeck.length){
       quoteDeck = shuffle(quotes);
       quoteIndex = 0;
     }
     return quoteDeck[quoteIndex++];
   }
 
-  function peekQuote() {
-    if (quoteDeck.length === 0 || quoteIndex >= quoteDeck.length) {
+  function peekQuote(){
+    if(quoteDeck.length === 0 || quoteIndex >= quoteDeck.length){
       quoteDeck = shuffle(quotes);
       quoteIndex = 0;
     }
     return quoteDeck[quoteIndex];
   }
 
-  function updateHud() {
+  function updateHud(){
     scoreEl.textContent = score;
     timeEl.textContent = Math.max(0, Math.ceil(timeLeft));
     comboEl.textContent = combo;
@@ -431,33 +947,35 @@ h1{margin:10px 0 0;padding-left:12px;font-size:clamp(32px,10vw,56px);line-height
     fillTrust.style.width = trust + "%";
   }
 
-  function rank(s) {
-    if (s < 700) return "Бриф ще сирий";
-    if (s < 1300) return "Є каркас стратегії";
-    if (s < 1900) return "Бетон схопився";
-    if (s < 2600) return "B2B стало сміливим";
+  function rank(s){
+    if(s < 700) return "Бриф ще сирий";
+    if(s < 1300) return "Є каркас стратегії";
+    if(s < 1900) return "Бетон схопився";
+    if(s < 2600) return "B2B стало сміливим";
     return "Головний маркетолог країни";
   }
 
-  function showFeedback(text, good) {
+  function showFeedback(text, good){
     feedback.textContent = text;
     feedback.style.background = good ? "#111" : "#4b1616";
-    feedback.style.borderColor = good ? "#111" : "#4b1616";
+    feedback.style.borderColor = good ? "#4b1616" : "#4b1616";
     feedback.classList.add("show");
 
     clearTimeout(feedbackTimer);
-    feedbackTimer = setTimeout(() => feedback.classList.remove("show"), 1200);
+    feedbackTimer = setTimeout(() => {
+      feedback.classList.remove("show");
+    }, 1100);
   }
 
-  function resetCardTransform() {
-    card.style.transition = "transform .18s ease-out, opacity .18s ease-out";
-    card.style.transform = "translate(0px,0px) rotate(0deg)";
-    card.style.opacity = "1";
+  function resetCard(){
+    gameCard.style.transition = "transform .18s ease-out, opacity .18s ease-out";
+    gameCard.style.transform = "translate(0px,0px) rotate(0deg)";
+    gameCard.style.opacity = "1";
     choiceLeft.style.opacity = "0";
     choiceRight.style.opacity = "0";
   }
 
-  function renderCard() {
+  function renderCard(){
     current = nextCard();
 
     cardTitle.textContent = current.title;
@@ -467,19 +985,18 @@ h1{margin:10px 0 0;padding-left:12px;font-size:clamp(32px,10vw,56px);line-height
     btnRightText.textContent = current.right_label;
 
     quoteBar.textContent = "«" + nextQuote() + "»";
-
-    resetCardTransform();
+    resetCard();
   }
 
-  function applyEffects(effects) {
+  function applyEffects(effects){
     brand = clamp(brand + (effects.brand || 0));
     sales = clamp(sales + (effects.sales || 0));
     trust = clamp(trust + (effects.trust || 0));
     score += (effects.score || 0) * combo;
   }
 
-  function choose(dir) {
-    if (!playing || resolving || !current) return;
+  function choose(dir){
+    if(!playing || resolving || !current) return;
 
     resolving = true;
 
@@ -487,7 +1004,7 @@ h1{margin:10px 0 0;padding-left:12px;font-size:clamp(32px,10vw,56px);line-height
       ? current.left_effects.score > current.right_effects.score
       : current.right_effects.score >= current.left_effects.score;
 
-    if (dir === "left") {
+    if(dir === "left"){
       applyEffects(current.left_effects);
       showFeedback(current.left_result, good);
     } else {
@@ -495,9 +1012,11 @@ h1{margin:10px 0 0;padding-left:12px;font-size:clamp(32px,10vw,56px);line-height
       showFeedback(current.right_result, good);
     }
 
-    if (good) {
+    if(good){
       streak += 1;
-      if (streak >= 3) combo = Math.min(5, combo + 1);
+      if(streak >= 3){
+        combo = Math.min(5, combo + 1);
+      }
     } else {
       streak = 0;
       combo = 1;
@@ -505,22 +1024,22 @@ h1{margin:10px 0 0;padding-left:12px;font-size:clamp(32px,10vw,56px);line-height
 
     updateHud();
 
-    const tx = dir === "left" ? -460 : 460;
-    const rot = dir === "left" ? -16 : 16;
+    const tx = dir === "left" ? -440 : 440;
+    const rot = dir === "left" ? -15 : 15;
 
-    card.style.transition = "transform .24s ease-out, opacity .24s ease-out";
-    card.style.transform = "translate(" + tx + "px,0px) rotate(" + rot + "deg)";
-    card.style.opacity = "0";
+    gameCard.style.transition = "transform .24s ease-out, opacity .24s ease-out";
+    gameCard.style.transform = `translate(${tx}px,0px) rotate(${rot}deg)`;
+    gameCard.style.opacity = "0";
 
     setTimeout(() => {
-      if (!playing) return;
+      if(!playing) return;
 
-      if (brand <= 0 || sales <= 0 || trust <= 0) {
+      if(brand <= 0 || sales <= 0 || trust <= 0){
         finishGame("Одна з метрик впала до нуля.");
         return;
       }
 
-      if (brand >= 100 || sales >= 100 || trust >= 100) {
+      if(brand >= 100 || sales >= 100 || trust >= 100){
         finishGame("Одна з метрик зашкалює — перекіс у стратегії.");
         return;
       }
@@ -530,7 +1049,7 @@ h1{margin:10px 0 0;padding-left:12px;font-size:clamp(32px,10vw,56px);line-height
     }, 260);
   }
 
-  function startGame() {
+  function startGame(){
     deck = shuffle(cards);
     quoteDeck = shuffle(quotes);
     quoteIndex = 0;
@@ -547,25 +1066,21 @@ h1{margin:10px 0 0;padding-left:12px;font-size:clamp(32px,10vw,56px);line-height
 
     startScreen.classList.add("hidden");
     overScreen.classList.add("hidden");
-
     hud.classList.remove("hidden");
-    meters.classList.remove("hidden");
-    cardStack.classList.remove("hidden");
+    cardArea.classList.remove("hidden");
     controls.classList.remove("hidden");
     quoteBar.classList.remove("hidden");
 
     playing = true;
-
     updateHud();
     renderCard();
   }
 
-  function finishGame(reason = "Час вийшов.") {
+  function finishGame(reason = "Час вийшов."){
     playing = false;
 
     hud.classList.add("hidden");
-    meters.classList.add("hidden");
-    cardStack.classList.add("hidden");
+    cardArea.classList.add("hidden");
     controls.classList.add("hidden");
     quoteBar.classList.add("hidden");
 
@@ -577,66 +1092,64 @@ h1{margin:10px 0 0;padding-left:12px;font-size:clamp(32px,10vw,56px);line-height
     overScreen.classList.remove("hidden");
   }
 
-  card.addEventListener("pointerdown", (e) => {
-    if (!playing || resolving) return;
-
+  gameCard.addEventListener("pointerdown", (e) => {
+    if(!playing || resolving) return;
     dragging = true;
-    sx = e.clientX;
-    dx = 0;
-    card.style.transition = "none";
-    card.setPointerCapture(e.pointerId);
+    startX = e.clientX;
+    deltaX = 0;
+    gameCard.style.transition = "none";
+    gameCard.setPointerCapture(e.pointerId);
   });
 
-  card.addEventListener("pointermove", (e) => {
-    if (!dragging || !playing || resolving) return;
+  gameCard.addEventListener("pointermove", (e) => {
+    if(!dragging || !playing || resolving) return;
 
-    dx = e.clientX - sx;
-    const rot = dx * 0.04;
+    deltaX = e.clientX - startX;
+    const rot = deltaX * 0.04;
 
-    card.style.transform = "translate(" + dx + "px,0px) rotate(" + rot + "deg)";
-    choiceLeft.style.opacity = dx < -20 ? String(Math.min(1, Math.abs(dx) / 120)) : "0";
-    choiceRight.style.opacity = dx > 20 ? String(Math.min(1, Math.abs(dx) / 120)) : "0";
+    gameCard.style.transform = `translate(${deltaX}px,0px) rotate(${rot}deg)`;
+    choiceLeft.style.opacity = deltaX < -18 ? String(Math.min(1, Math.abs(deltaX) / 120)) : "0";
+    choiceRight.style.opacity = deltaX > 18 ? String(Math.min(1, Math.abs(deltaX) / 120)) : "0";
   });
 
-  function endDrag() {
-    if (!dragging) return;
-
+  function endDrag(){
+    if(!dragging) return;
     dragging = false;
 
-    if (Math.abs(dx) > 70) {
-      choose(dx < 0 ? "left" : "right");
+    if(Math.abs(deltaX) > 70){
+      choose(deltaX < 0 ? "left" : "right");
     } else {
-      resetCardTransform();
+      resetCard();
     }
   }
 
-  card.addEventListener("pointerup", endDrag);
-  card.addEventListener("pointercancel", endDrag);
+  gameCard.addEventListener("pointerup", endDrag);
+  gameCard.addEventListener("pointercancel", endDrag);
 
   btnLeft.addEventListener("click", () => choose("left"));
   btnRight.addEventListener("click", () => choose("right"));
+
   startBtn.addEventListener("click", startGame);
   againBtn.addEventListener("click", startGame);
 
   copyBtn.addEventListener("click", async () => {
-    try {
+    try{
       await navigator.clipboard.writeText(shareTextEl.textContent);
       copyBtn.textContent = "Скопійовано";
       setTimeout(() => copyBtn.textContent = "Скопіювати результат", 1200);
-    } catch(e) {
+    } catch(e){
       copyBtn.textContent = "Не вдалось";
       setTimeout(() => copyBtn.textContent = "Скопіювати результат", 1200);
     }
   });
 
-  function loop(ts) {
+  function loop(ts){
     const dt = Math.min(0.033, ((ts - lastTs) / 1000) || 0);
     lastTs = ts;
 
-    if (playing) {
+    if(playing){
       timeLeft -= dt;
-
-      if (timeLeft <= 0) {
+      if(timeLeft <= 0){
         timeLeft = 0;
         updateHud();
         finishGame();
